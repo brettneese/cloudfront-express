@@ -1,0 +1,21 @@
+{
+  "name": "cloudfront-express",
+  "version": "1.0.0",
+  "description": "A simple library for Lambda@Edge that allows conversion between CloudFront events and Express req/res objects.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test.js"
+  },
+  "keywords": [
+    "lambda",
+    "cloudfront",
+    "edge",
+    "lambda@edge",
+    "express"
+  ],
+  "author": "Brett Neese <brett@neese.rocks>",
+  "license": "MIT",
+  "dependencies": {
+    "lodash.foreach": "^4.5.0"
+  }
+}
