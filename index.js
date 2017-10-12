@@ -79,11 +79,13 @@ exports.generateCloudfrontResponse = function(response) {
 /**
  * Generate an Express response from a generic response object.
  * @param {object} response - a generic response object.
+ * @param {object} req - Express req object
+ * @param {object} res - Express res object
+ * @param {object} next - Express next object
  * @returns {object} cfRes - a CloudFront viewer response object.
  */
 
 exports.sendExpressResponse = function(response, req, res, next) {
-  console.log("sending response");
 
   // passing the original request as the response  will cause the 
   if (response === req) {
