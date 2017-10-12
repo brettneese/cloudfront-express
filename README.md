@@ -59,7 +59,7 @@ That's still more than enough to do what can be done with Lambda@Edge
 
 This does this opposite: it accepts a generic `response` object and transforms it into a Cloudfront viewer response object. You can then pass this into your Lambda@Edge callback to return a response! 
 
-# sendExpressResponse(response, req, res, next) {
+## sendExpressResponse(response, req, res, next)
 
 This sends down an Express response given a generic response object. The headers, body, and status will all be appopriately set based on that properties of that object. 
 
