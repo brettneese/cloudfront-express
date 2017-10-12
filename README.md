@@ -1,18 +1,48 @@
 # cloudfront-express
 
-A simple (~100 LOC) library for Lambda@Edge that allows conversion between CloudFront events and Express req/res objects.
+A simple (~100 LOC) library for Lambda@Edge that allows conversion between CloudFront events, Express req, and generic response objects.
 
+# What is a generic response object?
+
+A generic response object is this:
+
+```
+{
+    headers: {
+        'Blah': 'blah' //required, or blank
+    },
+    status: 200, // required
+    body: "blah" // optional
+}
+
+
+```
 # Why would I want do to this?
 
 Our use case for Lambda@Edge is to make middleware that allows a SPA hosted on S3 to do a couple different things that need to be done server-side (like redirects and some dynamic CSS generation). But that makes it hard to test these functions or to run the SPA locally with these in place. 
 
-With this library, I can write Lambda@Edge functions right into Webpack dev server's middleware. I'll have more examples of doing that soon.
+With this library, I can write Lambda@Edge functions right into Webpack dev server's middleware. I'll have more examples of doing that soon. 
 
-Plus Cloudfront's event objects are unreasonably obtuse and confusing. By flattening them into something Expressy, they become much easier to work with.
+Plus Cloudfront's event objects are unreasonably obtuse and confusing. By flattening them into something Expressy, they become much easier to work with. On the other side, we can use a common .
 
+In our modules, we have a simple populateResponse() function, and two handlers that simply call that function, one for express and one for Lambda. This allows the greatest possible abstraction and the ability to work in both environments:
+
+```
+// lambda
+module.exports.handler = (event, context, callback) => {
+	var req = cloudfrontExpress.fromCf(event);
+
+	cloudfrontExpress.toCf(populateResponse(req));
+};
+
+// express
+module.exports.middleware = (req, res, next) => {
+	cloudfrontExpress.sendExpressResponse(populateResponse(req), req, res, next);
+};
+```
 # API 
 
-There are two exported functions. They are described in much greater detail in the JSDoc comments, but from a high-level, it's just:
+There are three exported functions. They are described in much greater detail in the JSDoc comments, but from a high-level, it's just:
 
 ## fromCf(cfEvent)
 
@@ -25,10 +55,13 @@ This accepts a Cloudfront viewer request event and transforms it into an Express
 
 That's still more than enough to do what can be done with Lambda@Edge
 
-## toCf(res)
+## toCf(response)
 
-This does this opposite: it accepts an Express `res` object and transforms it into a Cloudfront viewer response object. You can then pass this into your Lambda@Edge callback to return a response! 
+This does this opposite: it accepts a generic `response` object and transforms it into a Cloudfront viewer response object. You can then pass this into your Lambda@Edge callback to return a response! 
 
+# sendExpressResponse(response, req, res, next) {
+
+This sends down an Express response given a generic response object. The headers, body, and status will all be appopriately set based on that properties of that object. 
 
 # Author 
 Brett Neese <brett@neese.rocks>
