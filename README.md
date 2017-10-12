@@ -2,6 +2,8 @@
 
 A simple (~100 LOC) library for Lambda@Edge that allows conversion between CloudFront events, Express req, and generic response objects.
 
+It's on npm as ["@hbkapps/cloudfront-express"](https://www.npmjs.com/package/cloudfront-express).
+
 # Why would I want do to this?
 
 Our use case for Lambda@Edge is to make middleware that allows a SPA hosted on S3 to do a couple different things that need to be done server-side (like redirects and some dynamic CSS generation). But that makes it hard to test these functions or to run the SPA locally with these in place. 
