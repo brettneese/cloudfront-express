@@ -11,7 +11,7 @@ function flattenHeaders(cfHeaders) {
   var headers = {};
 
   _forEach(cfHeaders, function(value, key) {
-    headers[key] = value[0].value;
+    headers[key.toLowerCase()] = value[0].value;
   });
 
   return headers;
@@ -66,9 +66,12 @@ exports.generateCloudfrontResponse = function(response) {
   var cfRes = {
     status: response.status.toString(),
     statusDescription: http.STATUS_CODES[response.status],
-    headers: expandHeaders(response.headers),
-    body: response.body
+    headers: expandHeaders(response.headers)  
   };
+
+  if(response.body){
+    cfRes.body = body;
+  }
 
   return cfRes;
 };
@@ -80,14 +83,13 @@ exports.generateCloudfrontResponse = function(response) {
  */
 
 exports.sendExpressResponse = function(response, req, res, next) {
-  
-  if (res === req) {
+  console.log("sending response");
+
+  // passing the original request as the response  will cause the 
+  if (response === req) {
     return next();
   }
-  console.log(response.headers);
-  console.log(response.body);
 
-  
   _forEach(response.headers, function(value, key) {
     res.set(key, value);
   });
@@ -95,9 +97,9 @@ exports.sendExpressResponse = function(response, req, res, next) {
   res.status(response.status);
 
   if (response.body) {
-    //res.send(body);
+    res.send(response.body);
   } else {
-    res.send(" ");
+    res.send("");
   }
 };
 
