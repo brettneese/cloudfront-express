@@ -50,7 +50,8 @@ exports.parseCloudfrontEvent = function(cfEvent) {
   const req = {
     headers: flattenHeaders(cfRequest.headers),
     method: cfRequest.method,
-    url: cfRequest.uri
+    url: cfRequest.uri,
+    originalCfReq: cfRequest
   };
 
   return req;
@@ -63,17 +64,25 @@ exports.parseCloudfrontEvent = function(cfEvent) {
  */
 
 exports.generateCloudfrontResponse = function(response) {
-  var cfRes = {
-    status: response.status.toString(),
-    statusDescription: http.STATUS_CODES[response.status],
-    headers: expandHeaders(response.headers)  
-  };
+  
+  // if the response still contains the `originalCfReq` property, just set the response to that
+  // this allows the bypassing of the function, for instance, on a successful authenticate,
+  // mostly mirroring the semantics used in the docs without fuss
+  if (response.originalCfReq) {
+    return response.originalCfReq;
+  } else {
+    var cfRes = {
+      status: response.status.toString(),
+      statusDescription: http.STATUS_CODES[response.status],
+      headers: expandHeaders(response.headers)
+    };
 
-  if(response.body){
-    cfRes.body = body;
+    if (response.body) {
+      cfRes.body = body;
+    }
+
+    return cfRes;
   }
-
-  return cfRes;
 };
 
 /**
@@ -86,8 +95,7 @@ exports.generateCloudfrontResponse = function(response) {
  */
 
 exports.sendExpressResponse = function(response, req, res, next) {
-
-  // passing the original request as the response  will cause the 
+  // passing the original request as the response  will cause the
   if (response === req) {
     return next();
   }
