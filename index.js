@@ -78,7 +78,7 @@ exports.generateCloudfrontResponse = function(response) {
     };
 
     if (response.body) {
-      cfRes.body = body;
+      cfRes.body = response.body;
     }
 
     return cfRes;
