@@ -4,7 +4,7 @@ const cloudfrontExpress = require('cloudfront-express');
 const _each = require('lodash.foreach');
 const css = require('node-css');
 
-const API_URL = process.env.API_URL || 'https://api.production.hbkapps.com';
+const API_URL = process.env.API_URL || 'https://api.website.com';
 
 module.exports.pathPattern = () => {
 	return '*org.css*';
@@ -49,9 +49,9 @@ function generateCss(req){
 
 	let body = '';
 
-	if(cookies && cookies['X-HBK-User']){
+	if(cookies && cookies['X-User']){
 		var currentUser = JSON.parse(
-			Buffer.from(cookies['X-HBK-User'], 'base64').toString('utf-8')
+			Buffer.from(cookies['X-User'], 'base64').toString('utf-8')
 		);
 
 		body += generateHeaderColorCss(currentUser) +

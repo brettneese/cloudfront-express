@@ -33,9 +33,9 @@ function tokenIsValid(currentUser){
 
 function getCurrentUser(req){
 	const cookies = parseCookies(req);
-	if(cookies && cookies['X-HBK-User']){
+	if(cookies && cookies['X-User']){
 		var currentUser = JSON.parse(
-			Buffer.from(cookies['X-HBK-User'], 'base64').toString('utf-8')
+			Buffer.from(cookies['X-User'], 'base64').toString('utf-8')
 		);
 
 		return currentUser;
@@ -45,7 +45,7 @@ function getCurrentUser(req){
 }
 
 function populateResponse(req, cb){
-	let authHost = 'auth.hbkapps.com';
+	let authHost = 'auth.website.com';
 	let authScheme = 'https://';
 
 	let response = {
@@ -67,7 +67,7 @@ function populateResponse(req, cb){
 		authHost = process.env.AUTH_HOST || 'localhost:9000';
 		authScheme = process.env.AUTH_SCHEME || 'http://';
 	} else if(req.headers.host.includes('staging')){
-		authHost = 'auth.staging.hbkapps.com';		
+		authHost = 'auth.website.com';		
 	} 
 
 	let url = authScheme + authHost + '/?returnUrl=' + encodeURIComponent('http://' + req.headers.host + req.url);
