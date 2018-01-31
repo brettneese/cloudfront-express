@@ -1,0 +1,20 @@
+{
+  "name": "dynamic-css",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx mocha test.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cloudfront-express": "^1.0.4",
+    "lodash.foreach": "^4.5.0",
+    "node-css": "^0.1.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^3.5.3"
+  }
+}
