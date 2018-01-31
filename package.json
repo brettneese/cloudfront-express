@@ -1,7 +1,7 @@
 {
   "name": "cloudfront-express",
   "description": "A simple library for Lambda@Edge that allows conversion between CloudFront events and Express req/res objects.",  
-  "version": "1.0.5",
+  "version": "1.0.6",
   "files": [
     "index.js"
   ],

@@ -2,7 +2,7 @@
 
 A simple (~100 LOC) library for Lambda@Edge that allows conversion between CloudFront events, Express req, and generic response objects.
 
-It's on npm as [@hbkapps/cloudfront-express](https://www.npmjs.com/package/cloudfront-express).
+It's on npm as `[cloudfront-express]`(https://www.npmjs.com/package/cloudfront-express).
 
 # Why would I want do to this?
 
